@@ -65,9 +65,20 @@ export const userSignIn = async (req: Request, res: Response) => {
 export const authCheck = (permissions: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     let token = req.headers.authorization?.split(' ')[1] ;
-    const userRole = token && JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()).role;  
-    if (permissions.includes(userRole)) {
-      next();
+    // const userRole = token && JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()).role;  
+   
+   let userRole;
+    try {
+  const userRole = jwt.verify(token, process.env.TOKEN_KEY).role;
+  console.log("user role: " + userRole)
+  if (permissions.includes(userRole)) {
+    next();
   } else {
-    return res.status(401).json("Access denied");    
-  }}}
+  return res.status(401).json("Access denied");    
+  }
+} catch (error) {
+  console.error(error);
+}
+
+
+}}
