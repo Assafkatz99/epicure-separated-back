@@ -14,8 +14,9 @@ export const getAllDishes = async (req: Request, res: Response) => {
 export const createNewDish = async (req: Request, res: Response) => {
   try {
     const new_dish = req.body;
-    new_dish.changes = req.body.changes.replace(/\s/g, "").split(",");
-    new_dish.ingredients = req.body.ingredients.replace(/\s/g, "").split(",");
+    if (typeof(req.body.changes) === "string"){new_dish.changes = req.body.changes.replace(/\s/g, "").split(",");}
+    if (typeof(req.body.ingredients) === "string"){new_dish.ingredients = req.body.ingredients.replace(/\s/g, "").split(",");}
+    
     const response = await createDish(new_dish);
     return res.status(200).json(response);
   } catch (err: any) {
