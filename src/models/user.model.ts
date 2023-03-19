@@ -14,7 +14,7 @@ export const userSchema = new Schema<IUser>({
   last_name: { type: String },
   email: { type: String },
   password: { type: String },
-  role: { type: String }
+  role: { type: String },
 });
 
 export const UserModel = mongoose.model<IUser>("users", userSchema);

@@ -1,5 +1,10 @@
 import express, { Request, Response } from "express";
-import { createRestaurant, deleteRestaurant, editRestaurant, getRestaurants } from "../services/restaurants.service";
+import {
+  createRestaurant,
+  deleteRestaurant,
+  editRestaurant,
+  getRestaurants,
+} from "../services/restaurants.service";
 
 export const getAllRestaurants = async (req: Request, res: Response) => {
   try {
@@ -12,12 +17,11 @@ export const getAllRestaurants = async (req: Request, res: Response) => {
 };
 
 export const createNewRestaurant = async (req: Request, res: Response) => {
-
   try {
-    const new_rest = req.body;
-    if (typeof(new_rest.dish_ids) === "string"){new_rest.dish_ids = req.body.dish_ids.replace(/\s/g, '').split(',');}
+    const new_rest = req.body.restaurantInformation;
+    console.log(new_rest);
+    new_rest.dish_ids = new_rest.dish_ids.split(",").map(Number);
 
-    
     const response = await createRestaurant(new_rest);
     return res.status(200).json(response);
   } catch (err: any) {
@@ -26,12 +30,14 @@ export const createNewRestaurant = async (req: Request, res: Response) => {
   }
 };
 
-
 export const editExistingRestaurant = async (req: Request, res: Response) => {
   try {
-    const edited_restaurant = req.body;
-    if (typeof(edited_restaurant.dish_ids) === "string"){
-    edited_restaurant.dish_ids = req.body.dish_ids.replace(/\s/g, '').split(',');}
+    const edited_restaurant = req.body.restaurantInformation;
+    if (typeof edited_restaurant.dish_ids === "string") {
+      edited_restaurant.dish_ids = req.body.dish_ids
+        .replace(/\s/g, "")
+        .split(",");
+    }
     const response = await editRestaurant(edited_restaurant);
     return res.status(200).json(response);
   } catch (err: any) {
@@ -39,7 +45,6 @@ export const editExistingRestaurant = async (req: Request, res: Response) => {
     throw err;
   }
 };
-
 
 export const deleteExistingRestaurant = async (req: Request, res: Response) => {
   try {

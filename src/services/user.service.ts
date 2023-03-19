@@ -16,7 +16,7 @@ export const createUser = async (user: IUser) => {
       last_name: user.last_name,
       email: user.email,
       password: user.password,
-      role: "user"
+      role: "user",
     });
     console.log("user created");
   } catch (err) {

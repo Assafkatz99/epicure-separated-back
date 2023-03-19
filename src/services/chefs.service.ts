@@ -10,11 +10,9 @@ export const getChefs = async () => {
   }
 };
 
-
-
 export const createChef = async (chef: any) => {
   try {
-    const usedIds = new Set(await ChefsModel.distinct('id'));
+    const usedIds = new Set(await ChefsModel.distinct("id"));
     let nextId = 1;
     while (usedIds.has(nextId)) {
       nextId++;
@@ -26,7 +24,7 @@ export const createChef = async (chef: any) => {
       last_name: chef.last_name,
       about: chef.about,
       img_url: chef.img_url,
-      restaurant_ids: chef.restaurant_ids
+      restaurant_ids: chef.restaurant_ids,
     });
 
     console.log("chef created");
@@ -38,14 +36,17 @@ export const createChef = async (chef: any) => {
 
 export const editChef = async (chef: any) => {
   try {
-    await ChefsModel.updateOne({id: chef.id},
-    {  id: chef.id,
-      first_name: chef.first_name,
-      last_name: chef.last_name,
-      about: chef.about,
-      img_url: chef.img_url,
-      restaurant_ids: chef.restaurant_ids}
-      );
+    await ChefsModel.updateOne(
+      { id: chef.id },
+      {
+        id: chef.id,
+        first_name: chef.first_name,
+        last_name: chef.last_name,
+        about: chef.about,
+        img_url: chef.img_url,
+        restaurant_ids: chef.restaurant_ids,
+      }
+    );
 
     console.log("chef updated");
   } catch (err) {
@@ -55,7 +56,7 @@ export const editChef = async (chef: any) => {
 };
 export const deleteChef = async (chef_id: any) => {
   try {
-    await ChefsModel.deleteOne({id: chef_id})
+    await ChefsModel.deleteOne({ id: chef_id });
 
     console.log("chef deleted");
   } catch (err) {

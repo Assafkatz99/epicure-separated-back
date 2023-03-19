@@ -14,7 +14,7 @@ export interface IRestaurant {
 }
 
 export const restaurantSchema = new Schema<IRestaurant>({
-  id: { type: Number},
+  id: { type: Number },
   name: { type: String },
   img_url: { type: String },
   hours: [{ type: Number }],
