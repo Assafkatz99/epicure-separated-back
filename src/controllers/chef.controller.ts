@@ -15,7 +15,12 @@ export const createNewChef = async (req: Request, res: Response) => {
 
   try {
     const new_chef = req.body;
-    new_chef.restaurant_ids = req.body.restaurant_ids.replace(/\s/g, '').split(',');
+
+    if (typeof(req.body.restaurant_ids) === "string"){
+      new_chef.restaurant_ids = req.body.restaurant_ids.replace(/\s/g, '').split(',');}
+
+
+    
     const response = await createChef(new_chef);
     return res.status(200).json(response);
   } catch (err: any) {
@@ -28,7 +33,12 @@ export const editExistingChef = async (req: Request, res: Response) => {
   try {
     const edited_chef = req.body;
     console.log(edited_chef)
-    edited_chef.restaurant_ids = req.body.restaurant_ids.replace(/\s/g, '').split(',');
+
+
+    if (typeof(req.body.restaurant_ids) === "string"){
+      edited_chef.restaurant_ids = req.body.restaurant_ids.replace(/\s/g, '').split(',');}
+
+
     const response = await editChef(edited_chef);
     return res.status(200).json(response);
   } catch (err: any) {

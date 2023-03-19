@@ -1,4 +1,5 @@
-import {RestaurantModel} from "../models/restaurant.model"
+import { RestaurantModel } from "../models/restaurant.model";
+
 export const getRestaurants = async () => {
   try {
     const restaurants = await RestaurantModel.find();

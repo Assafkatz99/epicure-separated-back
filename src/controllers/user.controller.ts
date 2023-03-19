@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { checkIfUserEmailExists, createUser } from "../services/user.service";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -25,6 +25,7 @@ export const userSignUp = async (req: Request, res: Response) => {
       last_name: last_name,
       email: email.toLowerCase(),
       password: encryptedPassword,
+      role:"user"
     });
 
     res.status(201).send("Welcome! Please sign-in");
@@ -45,7 +46,7 @@ export const userSignIn = async (req: Request, res: Response) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
-        { user_id: user._id, email: email },
+        { user_id: user._id, email: email, role: user.role },
         process.env.TOKEN_KEY,
         {
           expiresIn: "2h",
@@ -59,3 +60,14 @@ export const userSignIn = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
+
+
+export const authCheck = (permissions: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    let token = req.headers.authorization?.split(' ')[1] ;
+    const userRole = token && JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()).role;  
+    if (permissions.includes(userRole)) {
+      next();
+  } else {
+    return res.status(401).json("Access denied");    
+  }}}
